@@ -1,0 +1,248 @@
+/* RESET ȘI STILURI GENERALE */
+body {
+    margin: 0;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #F5F5DC; /* Bej */
+    font-family: 'Press Start 2P', cursive, 'Arial', sans-serif; /* Un font pixelat ar fi ideal, dar trebuie importat */
+    color: #4B0082; /* Vișiniu închis pentru text */
+    position: relative;
+    z-index: 0;
+    image-rendering: pixelated; /* Crucial pentru un aspect pixelat clar */
+    text-rendering: optimizeSpeed; /* Poate ajuta la claritatea textului pixelat */
+}
+
+/* INIMI VIȘINII PE FUNDAL (MAI VIZIBILE ȘI MAI DETALIATE) */
+body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* SVG cu o inimă mai complexă și opacitate mărită */
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="60" height="60"><path d="M30 10 C15 0, 0 15, 0 30 C0 45, 15 60, 30 50 C45 60, 60 45, 60 30 C60 15, 45 0, 30 10Z" fill="%238B0000" stroke="%23A52A2A" stroke-width="2"/></svg>');
+    background-repeat: repeat;
+    background-size: 60px 60px; /* Dimensiunea unei singure inimioare */
+    opacity: 0.25; /* Opacitate mărită */
+    z-index: -1;
+}
+
+/* CONTAINERUL JOCULUI */
+#game-container {
+    position: relative;
+    width: 350px; /* Lățime mărită pentru detalii */
+    height: 450px; /* Înălțime mărită */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    /* Adăugăm o mică umbră pixelată la container pentru a-l scoate în evidență */
+    box-shadow: 4px 4px 0px 0px rgba(0,0,0,0.3);
+    border-radius: 5px; /* Colțuri ușor rotunjite */
+}
+
+/* COȘUL DE BASCHET (MAI COMPLEX) */
+#basket {
+    width: 100px; /* Lățime coș */
+    height: 100px; /* Înălțime coș */
+    position: absolute;
+    top: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #696969; /* Baza coșului, un gri mai închis */
+    border-top: 5px solid #4D4D4D; /* Margine superioară */
+    border-left: 5px solid #4D4D4D;
+    border-right: 5px solid #A9A9A9;
+    border-bottom: 5px solid #A9A9A9;
+    border-radius: 5px;
+    
+    /* Detalii pixelate pentru suport și structură */
+    box-shadow:
+        /* Ramă exterioară */
+        inset 0 0 0 2px #C0C0C0,
+        /* Pixeli pe verticală */
+        4px 0px 0px 0px #808080, -4px 0px 0px 0px #808080,
+        8px 0px 0px 0px #808080, -8px 0px 0px 0px #808080,
+        12px 0px 0px 0px #808080, -12px 0px 0px 0px #808080,
+        /* Pixeli pe orizontală */
+        0px 4px 0px 0px #808080, 0px -4px 0px 0px #808080,
+        0px 8px 0px 0px #808080, 0px -8px 0px 0px #808080,
+        0px 12px 0px 0px #808080, 0px -12px 0px 0px #808080,
+        
+        /* Efecte de umbră/lumină pentru 3D pixelat */
+        6px 6px 0px 0px rgba(0,0,0,0.4), /* Umbră */
+        -6px -6px 0px 0px rgba(255,255,255,0.4); /* Lumina */
+    z-index: 2;
+    overflow: hidden; /* Ascunde ce iese din coș */
+}
+
+/* Cercul coșului */
+.basket-rim {
+    position: absolute;
+    top: 5px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 70px;
+    height: 10px;
+    background-color: #FF4500; /* Roșu-portocaliu */
+    border-top: 3px solid #CD3700;
+    border-left: 3px solid #CD3700;
+    border-right: 3px solid #FF7F50;
+    border-bottom: 3px solid #FF7F50;
+    border-radius: 2px;
+    box-shadow: 
+        inset 0 0 0 1px #FFA07A,
+        2px 2px 0 0 #B22222; /* Umbră pixelată */
+}
+
+/* Plasa coșului (folosind pseudo-elemente pentru detalii) */
+.basket-net {
+    position: absolute;
+    top: 15px; /* Sub cercul coșului */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 60px;
+    overflow: hidden;
+    /* Grilă pixelată pentru plasă */
+    background: 
+        repeating-linear-gradient(0deg, #A9A9A9, #A9A9A9 2px, transparent 2px, transparent 4px),
+        repeating-linear-gradient(90deg, #A9A9A9, #A9A9A9 2px, transparent 2px, transparent 4px);
+    opacity: 0.8;
+}
+.basket-net::before,
+.basket-net::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: 
+        repeating-linear-gradient(45deg, #708090, #708090 1px, transparent 1px, transparent 2px),
+        repeating-linear-gradient(-45deg, #708090, #708090 1px, transparent 1px, transparent 2px);
+    opacity: 0.6;
+}
+
+/* MINGEA DE BASCHET (MAI COMPLEXĂ) */
+#ball {
+    width: 60px; /* Mărime puțin mai mare */
+    height: 60px;
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    cursor: pointer;
+    background-color: #FF8C00; /* Portocaliu deschis */
+    border-radius: 50%;
+    
+    /* Detalii pixelate pentru minge */
+    box-shadow:
+        /* Contur principal pixelat */
+        0 0 0 2px #E65100, /* Marginea de bază */
+        2px 2px 0 0 #FFA500, /* Colțuri lumină */
+        -2px -2px 0 0 #CC5500, /* Colțuri umbră */
+
+        /* Pixeli pentru linii curbe și textură */
+        inset 0px 0px 0px 3px #4B0082, /* Crucea centrală */
+        inset 10px 10px 0px 0px #4B0082,
+        inset -10px 10px 0px 0px #4B0082,
+        inset 10px -10px 0px 0px #4B0082,
+        inset -10px -10px 0px 0px #4B0082,
+        inset 5px 20px 0px 0px #4B0082, /* Linii adiționale */
+        inset -5px 20px 0px 0px #4B0082,
+        inset 5px -20px 0px 0px #4B0082,
+        inset -5px -20px 0px 0px #4B0082,
+        inset 20px 5px 0px 0px #4B0082,
+        inset -20px 5px 0px 0px #4B0082,
+        inset 20px -5px 0px 0px #4B0082,
+        inset -20px -5px 0px 0px #4B0082,
+        
+        /* Efect de lumină/umbră generală pe minge */
+        6px 6px 0px 0px rgba(0,0,0,0.3), /* Umbră subtilă */
+        -6px -6px 0px 0px rgba(255,255,255,0.3); /* Lumină subtilă */
+
+    transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94); /* Animație mai complexă */
+    z-index: 3;
+}
+
+/* Linii pe minge (folosind un element intern) */
+.ball-lines {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    box-shadow: 
+        inset 0 0 0 2px #4B0082, /* Cruce centrală */
+        inset 15px 0 0 0 #4B0082, /* Linii orizontale */
+        inset -15px 0 0 0 #4B0082,
+        inset 0 15px 0 0 #4B0082, /* Linii verticale */
+        inset 0 -15px 0 0 #4B0082;
+}
+
+/* STRATUL DE SUPRAPUNERE PENTRU MESAJ */
+#message-overlay {
+    display: none; /* Ascuns inițial */
+    position: fixed; /* Folosim fixed pentru a acoperi tot ecranul */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Strat semi-transparent negru */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 100; /* Asigură că este deasupra tuturor */
+    backdrop-filter: blur(8px); /* Efect de blur mai puternic */
+    animation: fadeIn 0.5s ease-out forwards;
+}
+
+/* CUTIA CU MESAJUL */
+#message-box {
+    background-color: rgba(255, 255, 255, 0.95);
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.3), 5px 5px 0px 0px #4B0082; /* Umbră și contur pixelat */
+    text-align: center;
+    max-width: 90%;
+    font-size: 1.3em;
+    line-height: 1.6;
+    animation: slideIn 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
+}
+
+/* INIMA MARE ANIMATĂ */
+#big-heart {
+    font-size: 100px; /* Dimensiune mult mai mare */
+    color: #8B0000; /* Vișiniu */
+    margin-bottom: 20px;
+    display: block; /* Va fi controlat de JS să apară/dispară */
+    animation: pulse 1s infinite alternate, popIn 0.5s ease-out forwards; /* Două animații */
+    text-shadow: 4px 4px 0px rgba(0,0,0,0.2); /* Umbră pixelată pentru inimă */
+}
+
+/* ANIMAȚII ADIȚIONALE */
+@keyframes pulse {
+    from { transform: scale(1); }
+    to { transform: scale(1.1); }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideIn {
+    from { transform: translateY(100px) scale(0.8); opacity: 0; }
+    to { transform: translateY(0) scale(1); opacity: 1; }
+}
+
+@keyframes popIn {
+    0% { transform: scale(0); opacity: 0; }
+    50% { transform: scale(1.2); opacity: 1; }
+    100% { transform: scale(1); }
+}
